@@ -1,5 +1,5 @@
 /*********************************************************************
-fitsarrayvv - Read and write gsl matrix structures to FITS images.
+fitsarrayvv - FITS image to 2D C array and vice versa.
 
 Copyright (C) 2014 Mohammad Akhlaghi
 Tohoku University Astronomical Institute, Sendai, Japan.
