@@ -1,7 +1,7 @@
 fitsarrayvv
 =========
 
-FITS image to 2D C array and vice versa.
+FITS image to C array and vice versa.
 
 This very simple library is made to facilitate reading and writing
 `FITS` images into `C` arrays. The functions used to read or write
