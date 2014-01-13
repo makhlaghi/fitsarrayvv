@@ -1,5 +1,5 @@
 /*********************************************************************
-fitsarrayvv - FITS image to 2D C array and vice versa.
+fitsarrayvv - FITS image to C array and vice versa.
 
 Copyright (C) 2014 Mohammad Akhlaghi
 Tohoku University Astronomical Institute, Sendai, Japan.
