@@ -22,15 +22,8 @@ along with fitsarrayvv. If not, see <http://www.gnu.org/licenses/>.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "fitsarrayvv.h"
-/* 
-   fitsio.h is included here only for the 
-   FLEN macros in prepare_keywords. In case
-   You don't need to add keywords, you don't
-   need to include fitsio.h here. It is included
-   in fitsarrayvv.h.  
-*/
-#include "fitsio.h" 
 
 void prepare_keywords(struct keywords *keys);
 void free_keywords(struct keywords *keys);
@@ -38,30 +31,40 @@ void free_keywords(struct keywords *keys);
 int
 main(void)
 {
-    /* Here the type of the array can be left
-    as irrelevant. In fits_to_array, the type
-    will be set based on the fitstype argument 
-    (in this example "FLOAT"). */
+    /* Here the type of the array can be left as irrelevant. In
+    fits_to_array, the type will be set based on the BITPIX header
+    keyword. */
     void *array;
+
+    /* 'bitpix' will be set in fits_to_array() if you want to read an
+       array like this example. But if you want to write one, you have
+       to set it. The values are the macros defined in the cfitsio
+       manual section 4.1 for BITPIX. */
+    int bitpix;
+
+    /* Extention of the fits image to read. */
     int exten=0;
-    char EXTname[10];
-    size_t size1, size2;
+    char EXTname[20];		/* Name of the extention. */
+
+    /* C array sizes: size0: number of rows. size1: number of columns. */
+    size_t size0, size1;	
+
+    /* Defined in fitsarrayvv.h */
     struct keywords keys;
+
+    /* Input and output names. */
     char infits_name[]="./SampleFITS/1.fits";
     char outfits_name[]="./fitsmatrixtest.fits";
 
     /* Read the fits image into the float_matrix: */
-    fits_to_array(infits_name, exten, "FLOAT", 
-            &array, &size1, &size2);
+    fits_to_array(infits_name, exten, &bitpix, &array, &size0, &size1);
 
     printf("\nThe data in %s is now in an array\n", infits_name);
 
     /***********************************************
-
      YOU CAN DO ANYTHING YOU WANT WITH THE 
      FLOAT_MATRIX STRUCTURE HERE, 
      PLEASE ENJOY ;-).
-
     ************************************************/
 
     /* Set your added keywords, in case you don't want to
@@ -70,9 +73,8 @@ main(void)
     prepare_keywords(&keys);
  
     /* Write the matrix to a fits file: */
-    strcpy(EXTname, "IMG");
-    array_to_fits(outfits_name, &keys, EXTname, 
-            "FLOAT", array, size1, size2);
+    strcpy(EXTname, "SAMPLEIMG");
+    array_to_fits(outfits_name, &keys, EXTname, bitpix, array, size0, size1);
 
     printf("\nThe array has been written to %s\n\n", outfits_name);
 
@@ -83,11 +85,13 @@ main(void)
     return 0;
 }
 
+
+
+
+
+/* This function will prepare the keywords that will be added to the
+   final FITS image. */
 void prepare_keywords(struct keywords *keys)
-/**********************************************************
- ** This function will prepare the keywords that will be **
- ** added to the final FITS image.                       **
- **********************************************************/
 {
     /* Declarations: */
     size_t i;
@@ -129,10 +133,12 @@ void prepare_keywords(struct keywords *keys)
     strcpy(keys->comments_s[0], "An example string keyword"); 
 }
 
+
+
+
+
+/*Free the space allocated for all the keywords. */
 void free_keywords(struct keywords *keys)
-/**********************************************************
- ** Free the space allocated for all the keywords:       **
- **********************************************************/
 {
     /* Declarations: */
     size_t i;
