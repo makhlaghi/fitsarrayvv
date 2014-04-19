@@ -8,7 +8,7 @@ This very simple library is made to facilitate reading and writing
 `C` array into a `FITS` image are completely indepenedent of the type
 of the array. All the user has to do is to set the string argument
 `fitstype` to the desired type in the function.  The 6 data types
-defined by teh FITS standard (the `BITPIX` keyword in the FITS header)
+defined by the FITS standard (the `BITPIX` keyword in the FITS header)
 [supported by `cfitsio`
 ](http://heasarc.gsfc.nasa.gov/docs/software/fitsio/c/c_user/node20.html)
 can be read using this short program. See below for `LONGLONG_IMG`.
@@ -32,15 +32,16 @@ explanation on how to install it
 How to use it:
 --------------
 
-You just have to put the two `fitsmatrix.c` and `fitsmatrix.h` files
+You just have to put the two `fitsarrayvv.c` and `fitsarrayvv.h` files
 into your source files and include them in your `Makefile` (like the
-example here) and include `fitsmatrix.h` in which ever `.c` file you
-want to read or write `FITS` images. 
+example here) and include `fitsarrayvv.h` in which ever `.c` file you
+want to read or write `FITS` images. `fitsio.h` is included in
+`fitsarrayvv.h`.
 
 Both functions to read and write an array to a FITS image return
 void. The former's outputs are put in the pointer variables that you
 input to it and the second doesn't need any output (if it fails it
-will halt for now!).
+will halt, I will fix this later to return a non zero value!).
 
 To read a FITS image just define a `void *` variable and pass its
 address to `fits_to_array()`. Once this function is finished, this
@@ -52,7 +53,7 @@ values of `bitpix` are [defined by cfitsio
 
 Just note that if you want to use this newly created array in the same
 function that you called `fits_to_array()`, you have to copy the `void
-*` pointer to a pointer to the type of the image. If you want to send
+*` to a pointer to the type of the image. If you want to send
 it into another function, you don't have to do anything. What ever the
 input array to that function's type is, this `void *` will easily be
 copied into it.
@@ -61,7 +62,7 @@ I have made a very simple program reading and writing a `FITS` file as
 an example. To test if it is working correctly, you just have to run
 `make` in the directory you downloaded the source to in order to
 compile the program. To see it in action, run `./testprog`.  It will
-read the FITS image in the SampleFITS directory, tell you the average
+read the FITS image in the `SampleFITS` directory, tell you the average
 value of pixels in that image and write it to a new FITS image in the
 main program directory. This test program can also act as a guide on
 how to implement this code into your program. There are lots of
