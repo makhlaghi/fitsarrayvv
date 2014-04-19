@@ -1,7 +1,7 @@
 /*********************************************************************
 fitsarrayvv - FITS image to C array and vice versa.
 
-Copyright (C) 2014 Mohammad Akhlaghi
+Copyright (C) 2013, 2014 Mohammad Akhlaghi
 Tohoku University Astronomical Institute, Sendai, Japan.
 http://astr.tohoku.ac.jp/~akhlaghi/
 

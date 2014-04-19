@@ -1,7 +1,7 @@
 /*********************************************************************
 fitsarrayvv - Read and write gsl matrix structures to FITS images.
 
-Copyright (C) 2014 Mohammad Akhlaghi
+Copyright (C) 2013, 2014 Mohammad Akhlaghi
 Tohoku University Astronomical Institute, Sendai, Japan.
 http://astr.tohoku.ac.jp/~akhlaghi/
 
@@ -27,6 +27,7 @@ along with fitsarrayvv. If not, see <http://www.gnu.org/licenses/>.
 
 void prepare_keywords(struct keywords *keys);
 void free_keywords(struct keywords *keys);
+float average(float *array, size_t size);
 
 int
 main(void)
@@ -61,15 +62,16 @@ main(void)
 
     printf("\nThe data in %s is now in an array\n", infits_name);
 
-    /***********************************************
-     YOU CAN DO ANYTHING YOU WANT WITH THE 
-     FLOAT_MATRIX STRUCTURE HERE, 
-     PLEASE ENJOY ;-).
-    ************************************************/
+    /*****************************************************
+     YOU CAN DO ANYTHING YOU WANT WITH THE ARRAY JUST READ
+     LETS FIND ITS AVERAGE VALUE.*/
+    printf("\nThe average value is: %f\n", 
+	   average(array, size0*size1));
+    /*****************************************************/
 
-    /* Set your added keywords, in case you don't want to
-    add any, just remove this function and the declaration
-    and instead of keys in array_to_fits put a NULL. */
+    /* Set your added keywords, in case you don't want to add any,
+    just remove this function and the declarations above and instead
+    of 'keys' in array_to_fits(), put a NULL. */
     prepare_keywords(&keys);
  
     /* Write the matrix to a fits file: */
@@ -83,6 +85,23 @@ main(void)
 
     /* Finish: */
     return 0;
+}
+
+
+
+
+
+/* Just a stupid function to demonstrate how to use the data in the
+   array you just read from a FITS image. */
+float
+average(float *in, size_t size)
+{
+  float *fpt;
+  double sum=0;
+  fpt=in+size;
+  while(in<fpt)
+    sum+=*in++;
+  return sum/size;
 }
 
 

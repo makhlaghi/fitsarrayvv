@@ -1,47 +1,74 @@
 fitsarrayvv
-=========
+===========
 
 FITS image to C array and vice versa.
 
 This very simple library is made to facilitate reading and writing
-`FITS` images into `C` arrays. The functions used to read or write
-a `C` array into a `FITS` image are completely indepenedent of the
-type of the array. All the user has to do is to set the string 
-argument `fitstype` to the desired type in the function.
-Currently this program can read and write `C` arrays of type `float`, 
-`unsigned char`, `signed short` and `signed long`. Adding other types
-is trivial: Add a new function to `./src/fitsmatrix.c`, like the 
-ones that are already there only changing the types.
+`FITS` images into `C` arrays. The functions used to read or write a
+`C` array into a `FITS` image are completely indepenedent of the type
+of the array. All the user has to do is to set the string argument
+`fitstype` to the desired type in the function.  All of the data types
+(the `BITPIX` keyword in the FITS header) [supported by `cfitsio`
+](http://heasarc.gsfc.nasa.gov/docs/software/fitsio/c/c_user/node20.html) 
+can be read using this short program.
 
-It also includes a `keywords` structure so you can fill in all
-the keywords you want to add to your final FITS image during
-the execution of your program.
+It also includes a `keywords` structure so you can fill in all the
+keywords you want to add to your final FITS image during the execution
+of your program. If it is not necessary for you, just pass a `NULL` in
+its place.
 
-----------------------------------------
+
 Prerequisites
-----------------------------------------
-1. `cfitsio`: In order to read and write `FITS` files. You 
-can see an explanation on how to install it here (it is very
-easy to install):
-http://astr.tohoku.ac.jp/~akhlaghi/cfitsiowcslibinstall.html .
+-------------
 
----------------------------------------
+1. `cfitsio`: In order to read and write `FITS` files. You can see an
+explanation on how to install it
+[here](http://astr.tohoku.ac.jp/~akhlaghi/cfitsiowcslibinstall.html .)
+(it is very easy to install):
+
+
+
 How to use it:
----------------------------------------
+--------------
+
 You just have to put the two `fitsmatrix.c` and `fitsmatrix.h` files
-into your source files and include `fitsmatrix.h` in which ever 
-`.c` file you want to read or write `FITS` images. 
+into your source files and include them in your `Makefile` (like the
+example here) and include `fitsmatrix.h` in which ever `.c` file you
+want to read or write `FITS` images. 
 
-I have made a very simple program reading and writing a `FITS` file
-as an example. To test if it is working correctly, you just have to 
-run `make` in the directory you downloaded the source to in order 
-to compile the program. To see it in action, run `./testprog`. 
-This test program can also act as a guide on how to implement this 
-code into your program. There are lots of comments to guide you.
+Both functions to read and write an array to a FITS image return
+void. The former's outputs are put in the pointer variables that you
+input to it and the second doesn't need any output (if it fails it
+will halt for now!).
 
-----------------------------------------
+To read a FITS image just define a `void *` variable and pass its
+address to `fits_to_array()`. Once this function is finished, this
+pointer will point to the array containing the data in your desired
+fits image, what ever its data type was. You can check the data type
+of the array with the `bitpix` parameter that is also output. The
+values of `bitpix` are [defined by cfitsio
+](http://heasarc.gsfc.nasa.gov/docs/software/fitsio/c/c_user/node20.html).
+
+Just note that if you want to use this newly created array in the same
+function that you called `fits_to_array()`, you have to copy the `void
+*` pointer to a pointer to the type of the image. If you want to send
+it into another function, you don't have to do anything. What ever the
+input array to that function's type is, this `void *` will easily be
+copied into it.
+
+I have made a very simple program reading and writing a `FITS` file as
+an example. To test if it is working correctly, you just have to run
+`make` in the directory you downloaded the source to in order to
+compile the program. To see it in action, run `./testprog`.  It will
+read the FITS image in the SampleFITS directory, tell you the average
+value of pixels in that image and write it to a new FITS image in the
+main program directory. This test program can also act as a guide on
+how to implement this code into your program. There are lots of
+comments to guide you.
+
+
 Comments and suggestions:
-----------------------------------------
+-------------------------
 If you find any problems in this program please contact me so 
 I can correct them. I would also be very glad to hear any 
 suggestions or comments you might have, thank you.
@@ -52,10 +79,10 @@ akhlaghi@astr.tohoku.ac.jp
 
 http://astr.tohoku.ac.jp/~akhlaghi/
 
-----------------------------------------
+
 Copyright:
-----------------------------------------
-Copyright (C) 2013 Mohammad Akhlaghi
+----------
+Copyright (C) 2013, 2014 Mohammad Akhlaghi
 
 Tohoku University Astronomical Institute
 
