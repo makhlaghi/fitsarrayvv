@@ -7,10 +7,11 @@ This very simple library is made to facilitate reading and writing
 `FITS` images into `C` arrays. The functions used to read or write a
 `C` array into a `FITS` image are completely indepenedent of the type
 of the array. All the user has to do is to set the string argument
-`fitstype` to the desired type in the function.  All of the data types
-(the `BITPIX` keyword in the FITS header) [supported by `cfitsio`
-](http://heasarc.gsfc.nasa.gov/docs/software/fitsio/c/c_user/node20.html) 
-can be read using this short program.
+`fitstype` to the desired type in the function.  The 6 data types
+defined by teh FITS standard (the `BITPIX` keyword in the FITS header)
+[supported by `cfitsio`
+](http://heasarc.gsfc.nasa.gov/docs/software/fitsio/c/c_user/node20.html)
+can be read using this short program. See below for `LONGLONG_IMG`.
 
 It also includes a `keywords` structure so you can fill in all the
 keywords you want to add to your final FITS image during the execution
@@ -65,6 +66,18 @@ value of pixels in that image and write it to a new FITS image in the
 main program directory. This test program can also act as a guide on
 how to implement this code into your program. There are lots of
 comments to guide you.
+
+
+Data types:
+-----------
+
+As it is written now, `fitsarrayvv` supports only 5 of the 6 standard
+FITS data types: `BYTE_IMG`, `SHORT_IMG`, `LONG_IMG`, `FLOAT_IMG` and
+`DOUBLE_IMG`. In `f2a_readalloc()` I have also kept an option for
+`LONGLONG_IMG`, but since the `long long` type is not supported in
+`C89` or `C90`, I have commented it out and warned the user. In case
+you want to use `C99` (which supports this type), simply correct this
+function.
 
 
 Comments and suggestions:
