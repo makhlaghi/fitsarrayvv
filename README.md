@@ -1,6 +1,14 @@
 fitsarrayvv
 ===========
 
+fitsarrayvv is discontinued. Its core algorithms are now implemented in 
+GNU Astronomy Utilities:
+
+https://www.gnu.org/software/gnuastro/
+
+Please visit there for a much better user experience and more accurate
+programs.
+
 FITS image to C array and vice versa.
 
 This very simple library is made to facilitate reading and writing
